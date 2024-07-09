@@ -118,7 +118,7 @@ class TheMovieDb extends ExternalAPI {
       }
     );
     this.region = region;
-    this.originalLanguage = originalLanguage;
+    this.originalLanguage = originalLanguage + '|en|ja';
   }
 
   public searchMulti = async ({
@@ -469,6 +469,15 @@ class TheMovieDb extends ExternalAPI {
     watchProviders,
     watchRegion,
   }: DiscoverMovieOptions = {}): Promise<TmdbSearchMovieResponse> => {
+    const exclude_keywords = [
+      '155477',
+      '267122',
+      '1664',
+      '220195',
+      '549649',
+      '256466',
+    ];
+
     try {
       const defaultFutureDate = new Date(
         Date.now() + 1000 * 60 * 60 * 24 * (365 * 1.5)
@@ -480,7 +489,7 @@ class TheMovieDb extends ExternalAPI {
         .toISOString()
         .split('T')[0];
 
-      const data = await this.get<TmdbSearchMovieResponse>('/discover/movie', {
+      const dataParams = {
         params: {
           sort_by: sortBy,
           page,
@@ -514,8 +523,14 @@ class TheMovieDb extends ExternalAPI {
           'vote_count.lte': voteCountLte,
           watch_region: watchRegion,
           with_watch_providers: watchProviders,
+          without_keywords: exclude_keywords,
         },
-      });
+      };
+
+      const data = await this.get<TmdbSearchMovieResponse>(
+        '/discover/movie',
+        dataParams
+      );
 
       return data;
     } catch (e) {

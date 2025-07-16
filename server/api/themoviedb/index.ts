@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import ExternalAPI from '@server/api/externalapi';
 import cacheManager from '@server/lib/cache';
 import { getSettings } from '@server/lib/settings';
@@ -545,10 +547,8 @@ class TheMovieDb extends ExternalAPI {
           'vote_count.lte': voteCountLte,
           watch_region: watchRegion,
           with_watch_providers: watchProviders,
-          certification: certification,
-          'certification.gte': certificationGte,
-          'certification.lte': certificationLte,
-          certification_country: certificationCountry,
+          'certification.lte': '19',
+          certification_country: 'KR',
         },
       });
 
